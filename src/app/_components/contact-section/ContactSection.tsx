@@ -4,7 +4,7 @@ import { AnimatedButton } from "./AnimatedButton";
 
 export function ContactSection() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
           Ready to Start Your{" "}
@@ -54,7 +54,7 @@ export function ContactSection() {
               </div>
 
               <div className="text-center">
-                <div className="inline-block p-6 bg-white rounded-full shadow-md mb-6">
+                <div className="inline-block p-6  rounded-full shadow-md mb-6">
                   <Utensils className="h-16 w-16 text-green-600" />
                 </div>
                 <AnimatedButton />
