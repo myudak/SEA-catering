@@ -3,6 +3,7 @@ import {
   AboutSection,
   FeaturesSection,
   ContactSection,
+  JourneySection,
 } from "./_components";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <HeroSection />
       <AboutSection />
+      <JourneySection />
       <FeaturesSection />
       <ContactSection />
     </div>
