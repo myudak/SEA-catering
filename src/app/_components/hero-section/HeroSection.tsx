@@ -18,7 +18,7 @@ export function HeroSection() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-2 right-4 z-20 text-xs text-white/80 bg-black/40 px-2 py-1 rounded">
-          Image Designed by{" "}
+          Image by{" "}
           <a
             href="https://www.freepik.com"
             target="_blank"
