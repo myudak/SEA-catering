@@ -3,6 +3,7 @@ import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Navbar } from "@/components/navbar";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfairDisplay.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Navbar />
           {children}
           <Footer />
         </ThemeProvider>
