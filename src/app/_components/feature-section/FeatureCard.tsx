@@ -95,6 +95,17 @@ export function FeatureCard({
               priority
             />
           </div>
+          <span className="absolute bottom-2 right-4 text-xs text-white/80 bg-black/40 px-2 py-1 rounded">
+            Image by{" "}
+            <a
+              href="https://www.freepik.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline "
+            >
+              Freepik
+            </a>
+          </span>
         </div>
       </div>
     </div>
