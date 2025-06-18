@@ -127,7 +127,7 @@ function ModalContentComponent() {
   );
 }
 
-export function AnimatedModalDemo() {
+export function AnimatedButton() {
   return (
     <div className="flex items-center justify-center">
       <Modal>
