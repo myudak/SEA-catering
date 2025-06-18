@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Phone, MapPin } from "lucide-react";
+import { AnimatedModalDemo } from "./AnimatedButton";
 
 interface ContactCardProps {
   manager: string;
@@ -51,9 +51,7 @@ export function ContactCard({ manager, phone }: ContactCardProps) {
 
         {/* CTA Button */}
         <div className="text-center pt-4">
-          <Button size="lg" aria-label="Call SEA Catering now">
-            📞 Call Now
-          </Button>
+          <AnimatedModalDemo />
         </div>
       </CardContent>
     </Card>
