@@ -70,7 +70,7 @@ export function FeaturesSection() {
   ];
 
   return (
-    <section className="py-20 px-12">
+    <section className="py-20 px-12 bg-muted/30 dark:bg-muted/10">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">

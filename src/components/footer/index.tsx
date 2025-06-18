@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#dfd9ca] py-12 px-6 border-t border-neutral-300">
+    <footer className="bg-[#dfd9ca] dark:bg-muted py-12 px-6 border-t border-neutral-300 dark:border-neutral-700">
       <div className="max-w-6xl mx-auto text-center space-y-4">
         <h3 className="text-2xl font-semibold text-foreground tracking-tight">
           SEA Catering
