@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${playfairDisplay.className} antialiased`}>
         {children}
+        <Footer />
       </body>
     </html>
   );
