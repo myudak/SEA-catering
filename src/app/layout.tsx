@@ -7,6 +7,9 @@ const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
 });
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon2.png",
+  },
   title:
     "SEA Catering® | Healthy Meal Plans Delivered Across Indonesia – “Healthy Meals, Anytime, Anywhere”",
   description:
