@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { Toaster } from "sonner";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
