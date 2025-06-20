@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTransitionRouter } from "next-view-transitions";
 import Link from "next/link";
