@@ -68,16 +68,10 @@ const Navbar = () => {
   const slideInOut = () => {
     document.documentElement.classList.add("enable-view-transition");
 
-    document.documentElement.animate(
+    const oldAnim = document.documentElement.animate(
       [
-        {
-          opacity: 1,
-          transform: "translateY(0)",
-        },
-        {
-          opacity: 0.2,
-          transform: "translateY(-35%)",
-        },
+        { opacity: 1, transform: "translateY(0)" },
+        { opacity: 0.2, transform: "translateY(-35%)" },
       ],
       {
         duration: 1000,
@@ -87,7 +81,7 @@ const Navbar = () => {
       }
     );
 
-    document.documentElement.animate(
+    const newAnim = document.documentElement.animate(
       [
         {
           clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
@@ -104,10 +98,16 @@ const Navbar = () => {
       }
     );
 
-    // Remove the class after the transition is complete
-    setTimeout(() => {
-      document.documentElement.classList.remove("enable-view-transition");
-    }, 1100);
+    // Wait for both animations + give browser time to flush rendering
+    Promise.allSettled([oldAnim.finished, newAnim.finished]).then(() => {
+      // Add a rendering safety buffer (at least 1-2 frames)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.documentElement.classList.remove("enable-view-transition");
+        });
+      });
+    });
+
     // document.documentElement.classList.remove("enable-view-transition");
   };
 
