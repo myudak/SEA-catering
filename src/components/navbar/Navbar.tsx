@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetFooter,
+  SheetClose,
 } from "@/components/ui/sheet";
 import {
   Menu,
@@ -34,6 +35,8 @@ import Image from "next/image";
 import { useTransitionRouter } from "next-view-transitions";
 
 const Navbar = () => {
+  const [open, setOpen] = React.useState(false);
+
   const pathname = usePathname();
   //   const { user, profile, signOut } = useAuth();
   const user = null; // Replace with actual user state
@@ -225,7 +228,7 @@ const Navbar = () => {
 
           {/* Mobile Sheet Navigation */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="p-2">
                   <Menu className="h-6 w-6" />
@@ -296,50 +299,64 @@ const Navbar = () => {
                       <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b">
                         Signed in as {profile?.full_name || "User"}
                       </div>
-                      <Link href="/dashboard">
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start"
-                          size="sm"
-                        >
-                          <User className="h-4 w-4 mr-2" />
-                          Dashboard
-                        </Button>
-                      </Link>
-                      {profile?.role === "admin" && (
-                        <Link href="/admin">
+                      <SheetClose asChild>
+                        <Link href="/dashboard">
                           <Button
                             variant="outline"
                             className="w-full justify-start"
                             size="sm"
                           >
-                            <Settings className="h-4 w-4 mr-2" />
-                            Admin Panel
+                            <User className="h-4 w-4 mr-2" />
+                            Dashboard
                           </Button>
                         </Link>
+                      </SheetClose>
+                      {profile?.role === "admin" && (
+                        <SheetClose asChild>
+                          <Link href="/admin">
+                            <Button
+                              variant="outline"
+                              className="w-full justify-start"
+                              size="sm"
+                            >
+                              <Settings className="h-4 w-4 mr-2" />
+                              Admin Panel
+                            </Button>
+                          </Link>
+                        </SheetClose>
                       )}
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
-                        size="sm"
-                        onClick={handleSignOut}
-                      >
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Sign Out
-                      </Button>
+                      <SheetClose asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+                          size="sm"
+                          onClick={handleSignOut}
+                        >
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </SheetClose>
                     </div>
                   ) : (
                     <div className="space-y-3 w-full">
-                      <Link href="/auth/signin">
-                        <Button variant="outline" className="w-full" size="sm">
-                          Sign In
-                        </Button>
-                      </Link>
-                      <Link href="/auth/signup">
-                        <Button className="w-full" size="sm">
-                          Sign Up
-                        </Button>
-                      </Link>
+                      <SheetClose asChild>
+                        <Link href="/auth/signin">
+                          <Button
+                            variant="outline"
+                            className="w-full"
+                            size="sm"
+                          >
+                            Sign In
+                          </Button>
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link href="/auth/signup">
+                          <Button className="w-full" size="sm">
+                            Sign Up
+                          </Button>
+                        </Link>
+                      </SheetClose>
                     </div>
                   )}
                 </SheetFooter>
