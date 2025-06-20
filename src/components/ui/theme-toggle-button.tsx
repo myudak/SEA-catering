@@ -79,7 +79,7 @@ export default function ThemeToggleButton({
       document.getElementById(styleId)?.remove();
       console.log("Transition finished and styles cleaned up");
     });
-  }, [theme, setTheme]);
+  }, [variant, start, url, updateStyles, setTheme, theme]);
 
   return (
     <Button
