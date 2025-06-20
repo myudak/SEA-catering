@@ -205,6 +205,7 @@ const Navbar = () => {
                       const Icon = item.icon;
                       return (
                         <TransitionLink
+                          funcBeforeTransition={() => setOpen(false)}
                           key={item.href}
                           href={item.href}
                           className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors ${
