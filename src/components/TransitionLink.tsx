@@ -1,9 +1,16 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTransitionRouter } from "next-view-transitions";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+
+type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
+
+type TransitionLinkProps = {
+  funcBeforeTransition?: () => void;
+  funcAfterTransition?: () => void;
+} & LinkProps &
+  AnchorProps;
 
 const TransitionLink = ({
   funcBeforeTransition,
@@ -11,13 +18,7 @@ const TransitionLink = ({
   href,
   children,
   ...props
-}: {
-  funcBeforeTransition?: () => void;
-  funcAfterTransition?: () => void;
-  href: string;
-  children: React.ReactNode;
-  [key: string]: any;
-}) => {
+}: TransitionLinkProps) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
 
