@@ -6,10 +6,14 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 const TransitionLink = ({
+  funcBeforeTransition,
+  funcAfterTransition,
   href,
   children,
   ...props
 }: {
+  funcBeforeTransition?: () => void;
+  funcAfterTransition?: () => void;
   href: string;
   children: React.ReactNode;
   [key: string]: any;
@@ -67,11 +71,13 @@ const TransitionLink = ({
     <Link
       href={href}
       onClick={(e) => {
+        if (funcBeforeTransition) funcBeforeTransition();
         e.preventDefault();
         if (href === pathname) return;
         router.push(href, {
           onTransitionReady: slideInOut,
         });
+        if (funcAfterTransition) funcAfterTransition();
       }}
       {...props}
     >
