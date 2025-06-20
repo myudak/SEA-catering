@@ -281,22 +281,19 @@ const Navbar = () => {
                   ) : (
                     <div className="space-y-3 w-full">
                       <SheetClose asChild>
-                        <Link href="/auth/signin">
-                          <Button
-                            variant="outline"
-                            className="w-full"
-                            size="sm"
-                          >
-                            Sign In
-                          </Button>
-                        </Link>
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          size="sm"
+                          asChild
+                        >
+                          <Link href="/auth/signin">Sign In</Link>
+                        </Button>
                       </SheetClose>
                       <SheetClose asChild>
-                        <Link href="/auth/signup">
-                          <Button className="w-full" size="sm">
-                            Sign Up
-                          </Button>
-                        </Link>
+                        <Button className="w-full" size="sm" asChild>
+                          <Link href="/auth/signup">Sign Up</Link>
+                        </Button>
                       </SheetClose>
                     </div>
                   )}
