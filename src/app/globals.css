@@ -123,9 +123,6 @@
 }
 
 /* TRANSITION */
-.enable-view-transition {
-  /* Scoped inside this class */
-}
 
 .enable-view-transition::view-transition-old(root),
 .enable-view-transition::view-transition-new(root) {
