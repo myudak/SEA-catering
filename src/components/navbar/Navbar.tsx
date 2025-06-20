@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import ThemeToggleButton from "../ui/theme-toggle-button";
 import Image from "next/image";
-import { useTransitionRouter } from "next-view-transitions";
+import TransitionLink from "../TransitionLink";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -63,60 +63,12 @@ const Navbar = () => {
     }
   };
 
-  const router = useTransitionRouter();
-
-  const slideInOut = () => {
-    document.documentElement.classList.add("enable-view-transition");
-
-    const oldAnim = document.documentElement.animate(
-      [
-        { opacity: 1, transform: "translateY(0)" },
-        { opacity: 0.2, transform: "translateY(-35%)" },
-      ],
-      {
-        duration: 1000,
-        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-        fill: "forwards",
-        pseudoElement: "::view-transition-old(root)",
-      }
-    );
-
-    const newAnim = document.documentElement.animate(
-      [
-        {
-          clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-        },
-        {
-          clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
-        },
-      ],
-      {
-        duration: 1000,
-        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-        fill: "forwards",
-        pseudoElement: "::view-transition-new(root)",
-      }
-    );
-
-    // Wait for both animations + give browser time to flush rendering
-    Promise.allSettled([oldAnim.finished, newAnim.finished]).then(() => {
-      // Add a rendering safety buffer (at least 1-2 frames)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          document.documentElement.classList.remove("enable-view-transition");
-        });
-      });
-    });
-
-    // document.documentElement.classList.remove("enable-view-transition");
-  };
-
   return (
     <nav className="shadow-md sticky top-0 z-50 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <TransitionLink href="/" className="flex items-center space-x-2">
             {/* <UtensilsCrossed className="h-8 w-8 text-green-600" /> */}
             <Image
               src={"/favicon2.png"}
@@ -128,20 +80,14 @@ const Navbar = () => {
             <span className="text-2xl font-bold">
               <span className="text-green-600">SEA</span> Catering
             </span>
-          </Link>
+          </TransitionLink>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
-                <Link
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(item.href, {
-                      onTransitionReady: slideInOut,
-                    });
-                  }}
+                <TransitionLink
                   key={item.href}
                   href={item.href}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
@@ -152,7 +98,7 @@ const Navbar = () => {
                 >
                   <Icon className="h-4 w-4" />
                   <span>{item.label}</span>
-                </Link>
+                </TransitionLink>
               );
             })}
           </div>
@@ -228,6 +174,7 @@ const Navbar = () => {
 
           {/* Mobile Sheet Navigation */}
           <div className="md:hidden">
+            <ThemeToggleButton />
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="p-2">
@@ -257,15 +204,8 @@ const Navbar = () => {
                     {navItems.map((item) => {
                       const Icon = item.icon;
                       return (
-                        <Link
+                        <TransitionLink
                           key={item.href}
-                          onClick={(e) => {
-                            setOpen(false);
-                            e.preventDefault();
-                            router.push(item.href, {
-                              onTransitionReady: slideInOut,
-                            });
-                          }}
                           href={item.href}
                           className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors ${
                             isActive(item.href)
@@ -275,7 +215,7 @@ const Navbar = () => {
                         >
                           <Icon className="h-5 w-5" />
                           <span>{item.label}</span>
-                        </Link>
+                        </TransitionLink>
                       );
                     })}
                   </div>
