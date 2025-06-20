@@ -4,16 +4,12 @@ import React from "react";
 // import { supabase } from '@/lib/supabase';
 // import { useAuth } from '@/contexts/AuthContext';
 // import { sanitizeInput } from '@/lib/auth';
-import {
-  ContactDetails,
-  HeaderSection,
-  TestimonialForm,
-  TestimonialSection,
-} from "./_components";
+import { ContactDetails, HeaderSection, TestimonialForm } from "./_components";
+import { TestimonialSection } from "@/components/testimonial-section";
 
 const ContactPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-orange-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-background transition-colors duration-300">
       <HeaderSection />
 
       <section className="py-8 px-4 sm:px-6 lg:px-8">
