@@ -4,8 +4,8 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/navbar";
-import { Toaster } from "sonner";
 import { ViewTransitions } from "next-view-transitions";
+import { Toaster } from "@/components/ui/sonner";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
