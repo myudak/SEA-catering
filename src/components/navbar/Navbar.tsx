@@ -26,9 +26,11 @@ import TransitionLink from "../TransitionLink";
 import { navItemType } from "./types";
 import MobileNavigation from "./MobileNavigation";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 
 const Navbar = () => {
-  const [open, setOpen] = React.useState(false);
+  const [signOutDialog, setSignOutDialog] = React.useState(false);
+  const [mobileNavSheet, setMobileNavSheet] = React.useState(false);
   const [isSigningOut, setIsSigningOut] = React.useState(false);
 
   const pathname = usePathname();
@@ -44,7 +46,7 @@ const Navbar = () => {
   const isActive = (href: string) => pathname === href;
 
   const handleSignOut = async () => {
-    if (isSigningOut) return; // Prevent multiple clicks
+    if (isSigningOut) return;
 
     setIsSigningOut(true);
     console.log("Navbar - Starting sign out...");
@@ -53,9 +55,8 @@ const Navbar = () => {
       await signOut();
       console.log("Navbar - Sign out successful");
       toast.success("Signed out successfully");
-      setOpen(false);
+      setMobileNavSheet(false);
 
-      // Wait a moment for the auth state to update, then reload
       setTimeout(() => {
         window.location.href = "/";
       }, 500);
@@ -152,7 +153,7 @@ const Navbar = () => {
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem
-                      onClick={handleSignOut}
+                      onClick={() => setSignOutDialog(true)}
                       className="flex items-center"
                       disabled={isSigningOut}
                     >
@@ -161,6 +162,41 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+
+                <Dialog open={signOutDialog} onOpenChange={setSignOutDialog}>
+                  <DialogContent>
+                    <DialogTitle>
+                      <div className="flex items-center space-x-2">
+                        <LogOut className="h-6 w-6 text-red-600" />
+                        <span>Sign Out</span>
+                      </div>
+                    </DialogTitle>
+                    <div className="p-6">
+                      <h3 className="text-lg font-semibold mb-4">
+                        Confirm Sign Out
+                      </h3>
+                      <p className="mb-4">
+                        Are you sure you want to sign out? You will need to sign
+                        in again to access your account.
+                      </p>
+                      <div className="flex justify-end space-x-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setSignOutDialog(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          onClick={handleSignOut}
+                          disabled={isSigningOut}
+                        >
+                          {isSigningOut ? "Signing out..." : "Sign Out"}
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </>
             ) : (
               <div className="flex items-center space-x-2">
@@ -183,8 +219,8 @@ const Navbar = () => {
             profile={profile}
             handleSignOut={handleSignOut}
             isSigningOut={isSigningOut}
-            open={open}
-            setOpen={setOpen}
+            open={mobileNavSheet}
+            setOpen={setMobileNavSheet}
           />
         </div>
       </div>
