@@ -24,6 +24,7 @@ const MobileNavigation = ({
   user,
   profile,
   handleSignOut,
+  isSigningOut = false,
 }: NavbarProps) => {
   return (
     <div className="md:hidden">
@@ -125,9 +126,10 @@ const MobileNavigation = ({
                     className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
                     size="sm"
                     onClick={handleSignOut}
+                    disabled={isSigningOut}
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    Sign Out
+                    {isSigningOut ? "Signing out..." : "Sign Out"}
                   </Button>
                 </SheetClose>
               </div>
