@@ -95,7 +95,7 @@ const MobileNavigation = ({
                   Signed in as {profile?.full_name || "User"}
                 </div>
                 <SheetClose asChild>
-                  <Link href="/dashboard">
+                  <TransitionLink href="/dashboard">
                     <Button
                       variant="outline"
                       className="w-full justify-start"
@@ -104,7 +104,7 @@ const MobileNavigation = ({
                       <User className="h-4 w-4 mr-2" />
                       Dashboard
                     </Button>
-                  </Link>
+                  </TransitionLink>
                 </SheetClose>
                 {profile?.role === "admin" && (
                   <SheetClose asChild>
@@ -142,12 +142,12 @@ const MobileNavigation = ({
                     size="sm"
                     asChild
                   >
-                    <Link href="/auth/signin">Sign In</Link>
+                    <TransitionLink href="/auth/signin">Sign In</TransitionLink>
                   </Button>
                 </SheetClose>
                 <SheetClose asChild>
                   <Button className="w-full" size="sm" asChild>
-                    <Link href="/auth/signup">Sign Up</Link>
+                    <TransitionLink href="/auth/signup">Sign Up</TransitionLink>
                   </Button>
                 </SheetClose>
               </div>

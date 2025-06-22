@@ -113,19 +113,19 @@ const Navbar = () => {
             {user ? (
               <>
                 {profile?.role === "admin" && (
-                  <Link href="/admin">
+                  <TransitionLink animationType="loadingTopBar" href="/admin">
                     <Button variant="outline" size="sm">
                       <Settings className="h-4 w-4 mr-2" />
                       Admin
                     </Button>
-                  </Link>
+                  </TransitionLink>
                 )}
-                <Link href="/dashboard">
+                <TransitionLink animationType="loadingTopBar" href="/dashboard">
                   <Button variant="outline" size="sm">
                     <User className="h-4 w-4 mr-2" />
                     Dashboard
                   </Button>
-                </Link>
+                </TransitionLink>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -200,14 +200,14 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link href="/auth/signin">
+                <TransitionLink href="/auth/signin">
                   <Button variant="ghost" size="sm">
                     Sign In
                   </Button>
-                </Link>
-                <Link href="/auth/signup">
+                </TransitionLink>
+                <TransitionLink href="/auth/signup">
                   <Button size="sm">Sign Up</Button>
-                </Link>
+                </TransitionLink>
               </div>
             )}
           </div>
