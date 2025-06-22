@@ -1,4 +1,5 @@
 import { LucideProps } from "lucide-react";
+import { AuthUser, UserProfile } from "@/types/user";
 
 export type navItemType = {
   href: string;
@@ -11,16 +12,10 @@ export type navItemType = {
 export type NavbarProps = {
   navItems: navItemType;
   isActive: (href: string) => boolean;
-  user?: {
-    name: string;
-    email: string;
-    image?: string;
-  };
-  profile?: {
-    full_name: string;
-    role: string;
-  };
+  user: AuthUser | null;
+  profile: UserProfile | null;
   handleSignOut?: () => void;
+  isSigningOut?: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
 };
