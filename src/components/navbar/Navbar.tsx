@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-// import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,18 +25,14 @@ import Image from "next/image";
 import TransitionLink from "../TransitionLink";
 import { navItemType } from "./types";
 import MobileNavigation from "./MobileNavigation";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
+  const [isSigningOut, setIsSigningOut] = React.useState(false);
 
   const pathname = usePathname();
-  //   const { user, profile, signOut } = useAuth();
-  const user = undefined; // Replace with actual user state
-  const profile = { full_name: "John Doe", role: "admin" }; // Replace with actual profile state
-  const signOut = async () => {
-    // Replace with actual sign out logic
-    console.log("User signed out");
-  };
+  const { user, profile, signOut } = useAuth();
 
   const navItems: navItemType = [
     { href: "/", label: "Home", icon: Home },
@@ -48,10 +44,25 @@ const Navbar = () => {
   const isActive = (href: string) => pathname === href;
 
   const handleSignOut = async () => {
+    if (isSigningOut) return; // Prevent multiple clicks
+
+    setIsSigningOut(true);
+    console.log("Navbar - Starting sign out...");
+
     try {
       await signOut();
+      console.log("Navbar - Sign out successful");
+      toast.success("Signed out successfully");
+      setOpen(false);
+
+      // Wait a moment for the auth state to update, then reload
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error("Navbar - Error signing out:", error);
+      toast.error("Failed to sign out. Please try again.");
+      setIsSigningOut(false);
     }
   };
 
@@ -143,9 +154,10 @@ const Navbar = () => {
                     <DropdownMenuItem
                       onClick={handleSignOut}
                       className="flex items-center"
+                      disabled={isSigningOut}
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      Sign Out
+                      {isSigningOut ? "Signing out..." : "Sign Out"}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -170,6 +182,7 @@ const Navbar = () => {
             user={user}
             profile={profile}
             handleSignOut={handleSignOut}
+            isSigningOut={isSigningOut}
             open={open}
             setOpen={setOpen}
           />
