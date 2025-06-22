@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
 
   // 🚫 Guest pages: redirect to dashboard if user is already logged in
 
-  console.log("Session:", session);
+  // console.log("Session:", session);
   if (isGuestRoute && session) {
     const redirectUrl = new URL("/dashboard", req.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
