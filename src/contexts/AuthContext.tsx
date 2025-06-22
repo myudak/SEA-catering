@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -201,15 +202,54 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Sign out function
+  type LogoutResult =
+    | { success: true }
+    | { success: false; reason: "timeout" }
+    | { success: false; reason: "supabase"; error: Error };
+
+  const logoutWithTimeout = async (
+    timeoutMs: number = 5000
+  ): Promise<LogoutResult> => {
+    const timeoutError = new Error("Logout request timed out");
+    timeoutError.name = "LogoutTimeout";
+
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(timeoutError), timeoutMs)
+    );
+
+    try {
+      await Promise.race([supabase.auth.signOut(), timeout]);
+      return { success: true };
+    } catch (error: any) {
+      if (error.name === "LogoutTimeout") {
+        return { success: false, reason: "timeout" };
+      }
+
+      return {
+        success: false,
+        reason: "supabase",
+        error: error instanceof Error ? error : new Error(String(error)),
+      };
+    }
+  };
+
   const signOut = async () => {
     try {
       console.log("AuthContext - Starting sign out...");
-      const { error } = await supabase.auth.signOut();
 
-      if (error) {
-        console.error("AuthContext - Sign out error:", error);
-        throw error;
+      const res = await logoutWithTimeout();
+
+      if (!res.success && res.reason === "timeout") {
+        console.error("AuthContext - Sign out timed out");
+        window.location.reload();
+        throw new Error("Sign out request timed out");
+        // return;
       }
+
+      // if (error) {
+      //   console.error("AuthContext - Sign out error:", error);
+      //   throw error;
+      // }
 
       console.log("AuthContext - Sign out successful");
       // Clear local state immediately
