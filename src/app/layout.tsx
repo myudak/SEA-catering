@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { ViewTransitions } from "next-view-transitions";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -30,12 +31,14 @@ export default function RootLayout({
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
         <body className={`${playfairDisplay.className} antialiased`}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster />
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Navbar />
+              {children}
+              <Footer />
+              <Toaster />
+            </ThemeProvider>
+          </AuthProvider>
         </body>
       </html>
     </ViewTransitions>
