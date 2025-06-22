@@ -9,90 +9,63 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log("Middleware - Session found:", !!session, session?.user?.id);
+  const pathname = req.nextUrl.pathname;
 
-  // Protected routes that require authentication
-  const protectedRoutes = ["/dashboard"];
-  // Admin-only routes
-  const adminRoutes = ["/admin"];
+  const isAuthRoute =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+  const isGuestRoute =
+    pathname.startsWith("/auth/signin") || pathname.startsWith("/auth/signup");
 
-  // Check if the current route is protected
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    req.nextUrl.pathname.startsWith(route)
-  );
+  // 🚫 Guest pages: redirect to dashboard if user is already logged in
 
-  // Check if the current route is admin-only
-  const isAdminRoute = adminRoutes.some((route) =>
-    req.nextUrl.pathname.startsWith(route)
-  );
-
-  // Redirect to login if accessing protected route without session
-  if (isProtectedRoute && !session) {
-    const redirectUrl = new URL("/auth/signin", req.url);
+  console.log("Session:", session);
+  if (isGuestRoute && session) {
+    const redirectUrl = new URL("/dashboard", req.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
-
-    // Copy any set cookies from the supabase response
-    response.headers.forEach((value, key) => {
-      if (key === "set-cookie") {
-        redirectResponse.headers.set(key, value);
-      }
-    });
-
+    copySetCookies(response, redirectResponse);
     return redirectResponse;
   }
 
-  // For admin routes, check if user has admin role
-  if (isAdminRoute) {
-    if (!session) {
-      const redirectUrl = new URL("/auth/signin", req.url);
-      const redirectResponse = NextResponse.redirect(redirectUrl);
+  // 🔐 Protected pages: redirect to signin if user not logged in
+  if (isAuthRoute && !session) {
+    const redirectUrl = new URL("/auth/signin", req.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    copySetCookies(response, redirectResponse);
+    return redirectResponse;
+  }
 
-      // Copy any set cookies from the supabase response
-      response.headers.forEach((value, key) => {
-        if (key === "set-cookie") {
-          redirectResponse.headers.set(key, value);
-        }
-      });
-
-      return redirectResponse;
-    }
-
-    // Get user profile to check role
+  // 🔐 Admin-only access
+  if (pathname.startsWith("/admin")) {
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
-      .eq("user_id", session.user.id)
+      .eq("user_id", session?.user.id)
       .single();
 
     if (!profile || profile.role !== "admin") {
       const redirectUrl = new URL("/", req.url);
       const redirectResponse = NextResponse.redirect(redirectUrl);
-
-      // Copy any set cookies from the supabase response
-      response.headers.forEach((value, key) => {
-        if (key === "set-cookie") {
-          redirectResponse.headers.set(key, value);
-        }
-      });
-
+      copySetCookies(response, redirectResponse);
       return redirectResponse;
     }
   }
 
-  // Return the response with any cookies that were set
+  // ✅ Pass through
   const finalResponse = NextResponse.next();
-
-  // Copy any set cookies from the supabase response
-  response.headers.forEach((value, key) => {
-    if (key === "set-cookie") {
-      finalResponse.headers.set(key, value);
-    }
-  });
-
+  copySetCookies(response, finalResponse);
   return finalResponse;
 }
 
-// Specify which routes this middleware should run on
+// 🔄 Helper to copy set-cookie headers
+function copySetCookies(from: Response, to: NextResponse) {
+  from.headers.forEach((value, key) => {
+    if (key === "set-cookie") {
+      to.headers.set(key, value);
+    }
+  });
+}
+
+// ✅ Only run on (auth) + (guest) routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/auth/:path*"],
 };
