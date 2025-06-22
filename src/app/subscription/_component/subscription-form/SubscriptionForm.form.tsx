@@ -33,6 +33,7 @@ const SForm = ({
   deliveryDayOptions,
   handleMealTypeChange,
   handleDeliveryDayChange,
+  isAuthenticated,
 }: SubscriptionFormProps) => {
   return (
     <div className="lg:col-span-2">
@@ -231,14 +232,10 @@ const SForm = ({
             <Button
               type="submit"
               className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white text-lg py-6"
-              disabled={loading}
+              disabled={loading || !isAuthenticated}
             >
               {loading ? "Creating Subscription..." : "Create Subscription"}
             </Button>
-
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-              This is a demo subscription form. Your data will not be saved.
-            </p>
           </form>
         </CardContent>
       </Card>

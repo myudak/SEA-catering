@@ -3,10 +3,13 @@ import { toast } from "sonner";
 import SForm from "./SubscriptionForm.form";
 import { deliveryDayOptions, MealPlan, mealTypeOptions } from "./type";
 import PriceCalculator from "./SubscriptionForm.pricecalculator";
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { User, ArrowRight } from "lucide-react";
 
 const SubscriptionForm = () => {
-  // const { user } = useAuth();
-  // const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
 
   // Static meal plans data (updated pricing per specifications)
   const mealPlans: MealPlan[] = [
@@ -131,6 +134,12 @@ const SubscriptionForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Check if user is authenticated
+    if (!user) {
+      toast.error("Please sign in to create a subscription");
+      return;
+    }
+
     setLoading(true);
 
     // Simulate form processing delay
@@ -210,9 +219,63 @@ const SubscriptionForm = () => {
   const selectedPlan = mealPlans.find((plan) => plan.id === formData.planId);
   const totalPrice = calculateTotalPrice();
 
+  if (authLoading) {
+    return (
+      <section className="py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+              <p className="mt-2 text-sm text-gray-600">Loading...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
+        {!user && (
+          <div className="mb-8 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <User className="h-6 w-6 text-amber-600 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-200">
+                  Sign in required
+                </h3>
+                <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
+                  Please sign in to create a subscription. You can view our meal
+                  plans and pricing below, but you&apos;ll need an account to
+                  place an order.
+                </p>
+                <div className="mt-4 flex space-x-3">
+                  <Link href="/auth/signin">
+                    <Button
+                      size="sm"
+                      className="bg-amber-600 hover:bg-amber-700"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-amber-300 text-amber-700 hover:bg-amber-100"
+                    >
+                      Create Account
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Form */}
           <SForm
@@ -226,6 +289,7 @@ const SubscriptionForm = () => {
             deliveryDayOptions={deliveryDayOptions}
             handleMealTypeChange={handleMealTypeChange}
             handleDeliveryDayChange={handleDeliveryDayChange}
+            isAuthenticated={!!user}
           />
 
           <PriceCalculator

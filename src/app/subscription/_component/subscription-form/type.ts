@@ -56,6 +56,7 @@ export interface SubscriptionFormProps {
   deliveryDayOptions: deliveryDayOptions;
   handleMealTypeChange: handleMealTypeChange;
   handleDeliveryDayChange: handleDeliveryDayChange;
+  isAuthenticated: boolean;
 }
 
 export interface PriceCalculatorProps {
