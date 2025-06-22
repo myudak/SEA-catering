@@ -19,3 +19,11 @@ export type NavbarProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
 };
+
+export type UserMenuProps = {
+  profile: UserProfile | null;
+  setSignOutDialog: (open: boolean) => void;
+  signOutDialog: boolean;
+  isSigningOut?: boolean;
+  handleSignOut?: () => void;
+};
