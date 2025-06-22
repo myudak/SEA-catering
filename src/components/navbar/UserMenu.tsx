@@ -10,7 +10,6 @@ import {
 } from "../ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { UserMenuProps } from "./types";
-import Link from "next/link";
 
 const UserMenu = ({
   profile,
@@ -48,17 +47,17 @@ const UserMenu = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href="/dashboard" className="flex items-center">
+            <TransitionLink href="/dashboard" className="flex items-center">
               <User className="h-4 w-4 mr-2" />
               Dashboard
-            </Link>
+            </TransitionLink>
           </DropdownMenuItem>
           {profile?.role === "admin" && (
             <DropdownMenuItem asChild>
-              <Link href="/admin" className="flex items-center">
+              <TransitionLink href="/admin" className="flex items-center">
                 <Settings className="h-4 w-4 mr-2" />
                 Admin Panel
-              </Link>
+              </TransitionLink>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
