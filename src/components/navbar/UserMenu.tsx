@@ -1,4 +1,4 @@
-import { Settings, User, Link, LogOut } from "lucide-react";
+import { Settings, User, LogOut } from "lucide-react";
 import React from "react";
 import TransitionLink from "../TransitionLink";
 import { Button } from "../ui/button";
@@ -10,6 +10,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { UserMenuProps } from "./types";
+import Link from "next/link";
 
 const UserMenu = ({
   profile,
