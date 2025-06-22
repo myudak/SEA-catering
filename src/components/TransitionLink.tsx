@@ -25,7 +25,11 @@ const TransitionLink = ({
   const pathname = usePathname();
 
   const animationHandler =
-    animationType === "slideInOut" ? slideInOut : loadingTopBar;
+    animationType === "slideInOut"
+      ? slideInOut
+      : animationType === "loadingTopBar"
+      ? loadingTopBar
+      : () => {};
 
   return (
     <Link
