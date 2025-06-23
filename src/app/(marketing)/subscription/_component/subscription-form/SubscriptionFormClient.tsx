@@ -208,9 +208,13 @@ export default function SubscriptionFormClient({
       });
 
       setLoading(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating subscription:", error);
-      toast.error(error.message || "Failed to create subscription");
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
       setLoading(false);
     }
   };
