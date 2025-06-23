@@ -18,6 +18,8 @@ import {
   Utensils,
   Calendar,
   AlertTriangle,
+  RefreshCw,
+  Mail,
 } from "lucide-react";
 import React from "react";
 import { SubscriptionFormProps } from "./type";
@@ -102,44 +104,79 @@ const SForm = ({
                 Choose Your Plan *
               </h3>
 
-              <RadioGroup
-                value={formData.planId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, planId: value })
-                }
-                className="space-y-3"
-              >
-                {mealPlans.map((plan) => (
-                  <div
-                    key={plan.id}
-                    className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
-                  >
-                    <RadioGroupItem value={plan.id} id={plan.id} />
-                    <div className="flex-1">
-                      <Label htmlFor={plan.id} className="cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-white">
-                              {plan.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                              {plan.description}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold text-green-600 dark:text-green-400">
-                              {formatPrice(plan.price)}
-                            </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              per meal
-                            </div>
-                          </div>
-                        </div>
-                      </Label>
-                    </div>
+              {!mealPlans || mealPlans.length === 0 ? (
+                <div className="p-6 text-center bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                  <AlertTriangle className="h-12 w-12 text-red-600 dark:text-red-400 mx-auto mb-4" />
+                  <h4 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
+                    Meal Plans Unavailable
+                  </h4>
+                  <p className="text-red-700 dark:text-red-300 mb-4">
+                    We&apos;re unable to load our meal plans at the moment.
+                    Please try refreshing the page or contact our support team.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => window.location.reload()}
+                      className="border-red-300 text-red-700 hover:bg-red-100"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Refresh Page
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        window.open("mailto:support@company.com", "_blank")
+                      }
+                      className="border-red-300 text-red-700 hover:bg-red-100"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Contact Support
+                    </Button>
                   </div>
-                ))}
-              </RadioGroup>
+                </div>
+              ) : (
+                <RadioGroup
+                  value={formData.planId}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, planId: value })
+                  }
+                  className="space-y-3"
+                >
+                  {mealPlans.map((plan) => (
+                    <div
+                      key={plan.id}
+                      className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                    >
+                      <RadioGroupItem value={plan.id} id={plan.id} />
+                      <div className="flex-1">
+                        <Label htmlFor={plan.id} className="cursor-pointer">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-white">
+                                {plan.name}
+                              </h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
+                                {plan.description}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-green-600 dark:text-green-400">
+                                {formatPrice(plan.price)}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">
+                                per meal
+                              </div>
+                            </div>
+                          </div>
+                        </Label>
+                      </div>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
             </div>
 
             {/* Meal Types */}

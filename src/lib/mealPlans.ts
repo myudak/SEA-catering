@@ -1,6 +1,5 @@
 import { createServerComponentClient } from "@/lib/supabase-server";
 import { MealPlan } from "@/types/meal-plan";
-import { toast } from "sonner";
 
 export async function getMealPlans(): Promise<MealPlan[] | null> {
   try {
@@ -14,14 +13,13 @@ export async function getMealPlans(): Promise<MealPlan[] | null> {
 
     if (error) {
       console.error("Error fetching meal plans:", error);
-      toast.error("Failed to load meal plans. using fallback.");
-      // Return fallback data on error
+      // Return null on error to trigger fallback
       return null;
     }
 
     return mealPlans || [];
   } catch (error) {
     console.error("Unexpected error fetching meal plans:", error);
-    return [];
+    return null;
   }
 }

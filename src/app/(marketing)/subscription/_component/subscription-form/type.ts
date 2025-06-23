@@ -3,6 +3,19 @@ export interface MealPlan {
   name: string;
   price: number;
   description: string;
+  image_url: string | null;
+  features: string[];
+  is_active: boolean;
+  sort_order: number;
+  badge_text: string;
+  color_scheme: string;
+  icon_emoji: string;
+  specs: {
+    freshness: string;
+    serving: string;
+  };
+  created_at: string;
+  updated_at: string;
 }
 
 export type mealTypeOptions = ["Breakfast", "Lunch", "Dinner"];
@@ -45,7 +58,7 @@ type handleMealTypeChange = (mealType: string, checked: boolean) => void;
 type handleDeliveryDayChange = (day: string, checked: boolean) => void;
 
 export interface SubscriptionFormProps {
-  mealPlans: MealPlan[];
+  mealPlans: MealPlan[] | null;
   selectedMealPlanId?: string;
   handleSubmit: handleSubmit;
   formData: formData;
