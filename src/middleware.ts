@@ -5,9 +5,17 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const { supabase, response } = createMiddlewareClient(req);
 
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
+
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // console.log("User:", user);
+
+  const session = user;
 
   const pathname = req.nextUrl.pathname;
 
@@ -39,7 +47,7 @@ export async function middleware(req: NextRequest) {
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
-      .eq("user_id", session?.user.id)
+      .eq("user_id", session?.id)
       .single();
 
     if (!profile || profile.role !== "admin") {
