@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
 import { Star } from "lucide-react";
 import React from "react";
@@ -36,13 +36,7 @@ const ReviewCard = ({ testimonial }: { testimonial: Testimonial }) => {
             src={testimonial.profile_picture_url || ""}
           />
           <AvatarFallback>
-            {testimonial.customer_name
-              .split(" ")
-              .filter(Boolean)
-              .slice(0, 2)
-              .map((word) => word[0])
-              .join("")
-              .toLowerCase()}
+            {getInitials(testimonial.customer_name)}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
