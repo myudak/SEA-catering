@@ -26,6 +26,7 @@ interface AuthContextType {
     fullName: string
   ) => Promise<{ error: AuthError | Error | null; user: User | null }>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 // Create context with default values
@@ -37,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
   signIn: async () => ({ error: null }),
   signUp: async () => ({ error: null, user: null }),
   signOut: async () => {},
+  refreshProfile: async () => {},
 });
 
 // Auth provider component
@@ -262,6 +264,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Refresh profile function
+  const refreshProfile = async () => {
+    if (user?.id) {
+      const updatedProfile = await fetchProfile(user.id);
+      setProfile(updatedProfile);
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -270,6 +280,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signIn,
     signUp,
     signOut,
+    refreshProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

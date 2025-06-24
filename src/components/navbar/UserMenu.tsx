@@ -41,7 +41,15 @@ const UserMenu = ({
             size="sm"
             className="flex items-center space-x-2"
           >
-            <User className="h-4 w-4" />
+            {profile?.profile_picture_url ? (
+              <img
+                src={profile.profile_picture_url}
+                alt={profile.full_name || "User Profile"}
+                className="h-6 w-6 rounded-full"
+              />
+            ) : (
+              <User className="h-6 w-6 text-gray-500" />
+            )}
             <span>{profile?.full_name || "User"}</span>
           </Button>
         </DropdownMenuTrigger>
