@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Users, Settings, Database } from "lucide-react";
+import TransitionLink from "@/components/TransitionLink";
 
 export default function AdminPage() {
   const { user, profile, loading } = useAuth();
@@ -100,6 +101,19 @@ export default function AdminPage() {
               <CardTitle>Admin Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                asChild
+              >
+                <TransitionLink
+                  animationType="loadingTopBar"
+                  href="/admin/meal-plans"
+                >
+                  <Database className="mr-2 h-4 w-4" />
+                  Manage Meal Plans
+                </TransitionLink>
+              </Button>
               <Button className="w-full justify-start" variant="outline">
                 <Users className="mr-2 h-4 w-4" />
                 Manage Users

@@ -1,12 +1,51 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Settings, CreditCard, LogOut } from "lucide-react";
+import { User, Settings, CreditCard, LogOut, Plus } from "lucide-react";
+import { Subscription } from "@/types/subscription";
+import SubscriptionCard from "./_components/SubscriptionCard";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
 
 export default function Dashboard() {
   const { user, profile, signOut, loading } = useAuth();
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [subscriptionsLoading, setSubscriptionsLoading] = useState(true);
+
+  // Fetch user's subscriptions
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await fetch("/api/subscriptions");
+        if (response.ok) {
+          const data = await response.json();
+          setSubscriptions(data.subscriptions || []);
+        } else {
+          console.error("Failed to fetch subscriptions");
+        }
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      } finally {
+        setSubscriptionsLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchSubscriptions();
+    }
+  }, [user]);
+
+  const handleSubscriptionUpdate = (updatedSubscription: Subscription) => {
+    setSubscriptions((prev) =>
+      prev.map((sub) =>
+        sub.id === updatedSubscription.id ? updatedSubscription : sub
+      )
+    );
+  };
 
   if (loading) {
     return (
@@ -27,9 +66,19 @@ export default function Dashboard() {
     }
   };
 
+  const activeSubscriptions = subscriptions.filter(
+    (sub) => sub.status === "active"
+  );
+  const pausedSubscriptions = subscriptions.filter(
+    (sub) => sub.status === "paused"
+  );
+  const cancelledSubscriptions = subscriptions.filter(
+    (sub) => sub.status === "cancelled"
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Welcome back, {profile?.full_name || "User"}!
@@ -39,11 +88,20 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Profile</CardTitle>
-              <User className="h-4 w-4 text-muted-foreground" />
+              <Avatar className="h-6 w-6">
+                <AvatarImage
+                  src={profile?.profile_picture_url || ""}
+                  alt={profile?.full_name || "Profile"}
+                />
+                <AvatarFallback>
+                  {getInitials(profile?.full_name || "User")}
+                </AvatarFallback>
+              </Avatar>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{profile?.full_name}</div>
@@ -57,14 +115,31 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Subscriptions
+                Active Subscriptions
               </CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
+              <div className="text-2xl font-bold">
+                {activeSubscriptions.length}
+              </div>
+              <p className="text-xs text-muted-foreground">Currently active</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Paused Subscriptions
+              </CardTitle>
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {pausedSubscriptions.length}
+              </div>
               <p className="text-xs text-muted-foreground">
-                Active subscriptions
+                Temporarily paused
               </p>
             </CardContent>
           </Card>
@@ -85,20 +160,123 @@ export default function Dashboard() {
           </Card>
         </div>
 
+        {/* Subscriptions Section */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Your Subscriptions
+            </h2>
+            <Link href="/subscription">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                New Subscription
+              </Button>
+            </Link>
+          </div>
+
+          {subscriptionsLoading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+              <p className="mt-2 text-sm text-gray-600">
+                Loading subscriptions...
+              </p>
+            </div>
+          ) : subscriptions.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  No subscriptions yet
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Get started by creating your first meal subscription.
+                </p>
+                <Link href="/subscription">
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Subscription
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-6">
+              {/* Active Subscriptions */}
+              {activeSubscriptions.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Active Subscriptions ({activeSubscriptions.length})
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {activeSubscriptions.map((subscription) => (
+                      <SubscriptionCard
+                        key={subscription.id}
+                        subscription={subscription}
+                        onUpdate={handleSubscriptionUpdate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Paused Subscriptions */}
+              {pausedSubscriptions.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Paused Subscriptions ({pausedSubscriptions.length})
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {pausedSubscriptions.map((subscription) => (
+                      <SubscriptionCard
+                        key={subscription.id}
+                        subscription={subscription}
+                        onUpdate={handleSubscriptionUpdate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Cancelled Subscriptions */}
+              {cancelledSubscriptions.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Cancelled Subscriptions ({cancelledSubscriptions.length})
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {cancelledSubscriptions.map((subscription) => (
+                      <SubscriptionCard
+                        key={subscription.id}
+                        subscription={subscription}
+                        onUpdate={handleSubscriptionUpdate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Account Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <Button className="w-full justify-start" variant="outline">
-                <CreditCard className="mr-2 h-4 w-4" />
-                Manage Subscriptions
-              </Button>
-              <Button className="w-full justify-start" variant="outline">
-                <User className="mr-2 h-4 w-4" />
-                Edit Profile
-              </Button>
+            <CardContent className="flex flex-col gap-4">
+              <Link href="/subscription">
+                <Button className="w-full justify-start" variant="outline">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create New Subscription
+                </Button>
+              </Link>
+              <Link href="/dashboard/edit-profile">
+                <Button className="w-full justify-start" variant="outline">
+                  <User className="mr-2 h-4 w-4" />
+                  Edit Profile
+                </Button>
+              </Link>
               <Button className="w-full justify-start" variant="outline">
                 <Settings className="mr-2 h-4 w-4" />
                 Account Settings
@@ -110,7 +288,7 @@ export default function Dashboard() {
             <CardHeader>
               <CardTitle>Account Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="flex flex-col gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-500">
                   Email
