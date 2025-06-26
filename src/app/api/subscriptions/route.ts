@@ -3,7 +3,7 @@ import { createServerComponentClient } from "@/lib/supabase-server";
 import { CreateSubscriptionRequest } from "@/types/subscription";
 
 // GET - Fetch user's subscriptions
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = await createServerComponentClient();
 
