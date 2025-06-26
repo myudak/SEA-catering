@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Save, X, Camera } from "lucide-react";
 import { toast } from "sonner";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
+import TransitionLink from "@/components/TransitionLink";
 
 export default function EditProfile() {
   const { user, profile, loading } = useAuth();
@@ -105,13 +105,13 @@ export default function EditProfile() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link
+          <TransitionLink
             href="/dashboard"
             className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
-          </Link>
+          </TransitionLink>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Edit Profile
           </h1>
