@@ -37,11 +37,17 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createServerComponentClient();
 
+    // AUTH USER
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
-    console.log("Authenticated User:", user);
+    if (!user && !request.headers.get("x-forwarded-for")) {
+      return NextResponse.json(
+        { error: "Unauthorized: Please log in to submit a testimonial" },
+        { status: 401 }
+      );
+    }
 
     const body: CreateTestimonialRequest = await request.json();
 
