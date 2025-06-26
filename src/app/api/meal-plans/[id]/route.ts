@@ -194,15 +194,17 @@ export async function DELETE(
 // GET /api/meal-plans/[id] - Public endpoint for fetching single meal plan
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
+    const { id } = context.params;
+
     const supabase = await createServerComponentClient();
 
     const { data: mealPlan, error } = await supabase
       .from("meal_plans")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("is_active", true)
       .single();
 
