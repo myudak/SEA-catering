@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       email: user ? null : body.email?.trim() || null,
       message: body.message.trim(),
       rating: body.rating,
-      status: "pending",
+      status: "approved",
       profile_picture_url: body.profile_picture_url || null,
       is_authenticated: !!user,
     };
