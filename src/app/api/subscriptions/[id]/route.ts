@@ -4,9 +4,10 @@ import { createServerComponentClient } from "@/lib/supabase-server";
 // GET - Fetch specific subscription
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
+    const { id } = await params;
     const supabase = await createServerComponentClient();
 
     // Get the authenticated user
@@ -28,7 +29,7 @@ export async function GET(
         meal_plan:meal_plans(*)
       `
       )
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("user_id", user.id)
       .single();
 
@@ -52,9 +53,10 @@ export async function GET(
 // PATCH - Update subscription (for status changes)
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
+    const { id } = await params;
     const supabase = await createServerComponentClient();
 
     // Get the authenticated user
@@ -105,7 +107,7 @@ export async function PATCH(
     const { data: subscription, error: updateError } = await supabase
       .from("subscriptions")
       .update(updateData)
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("user_id", user.id)
       .select(
         `

@@ -5,9 +5,10 @@ import { revalidatePath } from "next/cache";
 // PUT /api/meal-plans/[id] - Admin only endpoint for updating meal plans
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
+    const { id } = await params;
     const supabase = await createServerComponentClient();
 
     // Check authentication and admin role
@@ -104,7 +105,7 @@ export async function PUT(
     const { data: updatedMealPlan, error } = await supabase
       .from("meal_plans")
       .update(updateData)
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -138,10 +139,11 @@ export async function PUT(
 
 // DELETE /api/meal-plans/[id] - Admin only endpoint for deleting meal plans
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  _: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
+    const { id } = await params;
     const supabase = await createServerComponentClient();
 
     // Check authentication and admin role
@@ -165,10 +167,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const { error } = await supabase
-      .from("meal_plans")
-      .delete()
-      .eq("id", params.id);
+    const { error } = await supabase.from("meal_plans").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting meal plan:", error);
@@ -193,12 +192,11 @@ export async function DELETE(
 
 // GET /api/meal-plans/[id] - Public endpoint for fetching single meal plan
 export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
-) {
+  _: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    const { id } = context.params;
-
+    const { id } = await params;
     const supabase = await createServerComponentClient();
 
     const { data: mealPlan, error } = await supabase
