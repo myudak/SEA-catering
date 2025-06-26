@@ -40,17 +40,17 @@ export async function PATCH(request: NextRequest) {
         new URL(profile_picture_url);
 
         // Check if URL looks like an image (basic check)
-        const imageExtensions = [
-          ".jpg",
-          ".jpeg",
-          ".png",
-          ".gif",
-          ".webp",
-          ".svg",
-        ];
-        const hasImageExtension = imageExtensions.some((ext) =>
-          profile_picture_url.toLowerCase().includes(ext)
-        );
+        // const imageExtensions = [
+        //   ".jpg",
+        //   ".jpeg",
+        //   ".png",
+        //   ".gif",
+        //   ".webp",
+        //   ".svg",
+        // ];
+        // const hasImageExtension = imageExtensions.some((ext) =>
+        //   profile_picture_url.toLowerCase().includes(ext)
+        // );
 
         // Allow common image hosting domains or image extensions
         // const isImageHost =
@@ -79,7 +79,10 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: {
+      full_name: string;
+      profile_picture_url?: string;
+    } = {
       full_name: full_name.trim(),
     };
 
