@@ -57,7 +57,7 @@ export default function Header({
         </Button>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
               <Plus className="mr-2 h-4 w-4" />
               Add Meal Plan
             </Button>
