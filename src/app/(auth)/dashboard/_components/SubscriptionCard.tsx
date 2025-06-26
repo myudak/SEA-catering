@@ -89,8 +89,12 @@ export default function SubscriptionCard({
 
       toast.success("Subscription paused successfully");
       onUpdate(data.subscription);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to pause subscription");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Pause error:", error);
+      } else {
+        console.error("Unknwon error:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -117,8 +121,12 @@ export default function SubscriptionCard({
 
       toast.success("Subscription resumed successfully");
       onUpdate(data.subscription);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to resume subscription");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Pause error:", error);
+      } else {
+        console.error("Unknwon error:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -153,8 +161,12 @@ export default function SubscriptionCard({
 
       toast.success("Subscription cancelled successfully");
       onUpdate(data.subscription);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to cancel subscription");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Pause error:", error);
+      } else {
+        console.error("Unknwon error:", error);
+      }
     } finally {
       setLoading(false);
     }
