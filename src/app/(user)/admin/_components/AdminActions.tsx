@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TransitionLink from "@/components/TransitionLink";
-import { Database, Settings, Shield, Users } from "lucide-react";
+import { Database, MessageSquare, Users } from "lucide-react";
 
 export default function AdminActions() {
   return (
@@ -27,17 +27,18 @@ export default function AdminActions() {
             Manage Users
           </TransitionLink>
         </Button>
-        <Button variant="outline" className="w-full justify-start">
-          <Database className="mr-2 h-4 w-4" />
-          Manage Subscriptions
+        <Button variant="outline" className="w-full justify-start" asChild>
+          <TransitionLink
+            animationType="loadingTopBar"
+            href="/admin/subscriptions"
+          >
+            <Database className="mr-2 h-4 w-4" />
+            Manage Subscriptions
+          </TransitionLink>
         </Button>
         <Button variant="outline" className="w-full justify-start">
-          <Settings className="mr-2 h-4 w-4" />
-          System Settings
-        </Button>
-        <Button variant="outline" className="w-full justify-start">
-          <Shield className="mr-2 h-4 w-4" />
-          Security Settings
+          <MessageSquare className="mr-2 h-4 w-4" />
+          Manage Testimonials
         </Button>
       </CardContent>
     </Card>
