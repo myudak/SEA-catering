@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import TransitionLink from "@/components/TransitionLink";
 
 export function HeroSection() {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Hero Background - Next.js Image with Blur */}
       <div className="absolute inset-0">
         <Image
           width={1920}
@@ -45,9 +45,11 @@ export function HeroSection() {
           Discover the future of healthy eating with our customizable meal plans
           delivered fresh across Indonesia
         </p>
-        <Button size="lg" className="text-lg px-8 py-6 ">
-          Order Now
-        </Button>
+        <TransitionLink href={"/menu"}>
+          <Button size="lg" className="text-lg px-8 py-6 ">
+            Order Now
+          </Button>
+        </TransitionLink>
       </div>
     </section>
   );
