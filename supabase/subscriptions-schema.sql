@@ -53,3 +53,15 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_subscriptions_updated_at 
   BEFORE UPDATE ON subscriptions 
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+
+
+CREATE POLICY "Admins can update any profile; users only their own"
+ON subscriptions
+FOR UPDATE
+USING (
+  auth.uid() = user_id OR is_admin(auth.uid())
+)
+WITH CHECK (
+  auth.uid() = user_id OR is_admin(auth.uid())
+);
