@@ -32,6 +32,7 @@ const ReviewCard = ({ testimonial }: { testimonial: Testimonial }) => {
       <div className="flex flex-row items-center gap-2 mb-2">
         <Avatar>
           <AvatarImage
+            className="object-cover"
             alt={testimonial.customer_name}
             src={testimonial.profile_picture_url || ""}
           />
