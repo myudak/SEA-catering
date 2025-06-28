@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, LogIn } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
+import TransitionLink from "@/components/TransitionLink";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -59,35 +60,70 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Sign in to your SEA Catering account
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl mb-6 shadow-lg">
+            <LogIn className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Sign in to your{" "}
+            <span className="font-semibold text-green-600 dark:text-green-400">
+              SEA Catering
+            </span>{" "}
+            account
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4 rounded-md shadow-sm">
-            <div>
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
-                placeholder="you@example.com"
-              />
+        {/* Form Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
 
-            <div>
-              <Label htmlFor="password">Password</Label>
+            {/* Password Field */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Password
+                </Label>
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm text-green-600 hover:text-green-500 dark:text-green-400 dark:hover:text-green-300 hover:underline transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="password"
                   name="password"
@@ -96,40 +132,54 @@ export default function SignIn() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 pr-10"
+                  className="pl-10 pr-12 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4" />
                   )}
                 </button>
               </div>
             </div>
-          </div>
 
-          <div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full h-12 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <LogIn className="h-4 w-4" />
+                  <span>Sign In</span>
+                </div>
+              )}
             </Button>
-          </div>
-        </form>
+          </form>
+        </div>
 
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+        {/* Sign Up Link */}
+        <div className="text-center mt-6">
+          <p className="text-gray-600 dark:text-gray-400">
             Don&apos;t have an account?{" "}
-            <Link
+            <TransitionLink
               href="/auth/signup"
-              className="text-green-600 hover:text-green-500 font-medium"
+              className="text-green-600 hover:text-green-500 dark:text-green-400 dark:hover:text-green-300 font-medium hover:underline transition-colors"
             >
               Sign up
-            </Link>
+            </TransitionLink>
           </p>
         </div>
       </div>
