@@ -51,16 +51,6 @@ export default function MetricsSection({
               className="rounded-lg border shadow-sm"
               required={false}
             />
-            <div>
-              <div className="text-xs text-muted-foreground">
-                {dateRange?.from
-                  ? `From: ${dateRange.from?.toLocaleDateString()}`
-                  : ""}
-                {dateRange?.to
-                  ? ` — To: ${dateRange.to?.toLocaleDateString()}`
-                  : ""}
-              </div>
-            </div>
           </div>
         </CardContent>
       </Card>
