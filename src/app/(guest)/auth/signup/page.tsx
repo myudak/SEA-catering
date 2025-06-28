@@ -8,7 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Eye, EyeOff, Check, X } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Check,
+  X,
+  User,
+  Mail,
+  Lock,
+  Sparkles,
+} from "lucide-react";
 
 export default function SignUp() {
   const [fullName, setFullName] = useState("");
@@ -93,60 +102,110 @@ export default function SignUp() {
 
   const CriteriaItem = ({ met, text }: { met: boolean; text: string }) => (
     <div
-      className={`flex items-center space-x-2 text-sm ${
-        met ? "text-green-600" : "text-gray-500"
+      className={`flex items-center space-x-2 text-sm transition-colors duration-200 ${
+        met
+          ? "text-green-600 dark:text-green-400"
+          : "text-gray-500 dark:text-gray-400"
       }`}
     >
-      {met ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
-      <span>{text}</span>
+      <div
+        className={`rounded-full p-0.5 transition-colors duration-200 ${
+          met
+            ? "bg-green-100 dark:bg-green-900/30"
+            : "bg-gray-100 dark:bg-gray-800"
+        }`}
+      >
+        {met ? (
+          <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+        ) : (
+          <X className="h-3 w-3 text-gray-400" />
+        )}
+      </div>
+      <span className={met ? "font-medium" : ""}>{text}</span>
     </div>
   );
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Create an Account</h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Join SEA Catering today
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl mb-6 shadow-lg">
+            <Sparkles className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            Create an Account
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Join{" "}
+            <span className="font-semibold text-green-600 dark:text-green-400">
+              SEA Catering
+            </span>{" "}
+            today
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4 rounded-md shadow-sm">
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                type="text"
-                autoComplete="name"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="mt-1"
-                placeholder="John Doe"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="password">Password</Label>
+        {/* Form Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Full Name Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="fullName"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Full Name
+              </Label>
               <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="pl-10 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+
+            {/* Email Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="password"
                   name="password"
@@ -155,50 +214,64 @@ export default function SignUp() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 pr-10"
+                  className="pl-10 pr-12 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4" />
                   )}
                 </button>
               </div>
+
+              {/* Password Criteria */}
               {password && (
-                <div className="mt-2 space-y-1">
-                  <CriteriaItem
-                    met={passwordCriteria.length}
-                    text="At least 8 characters"
-                  />
-                  <CriteriaItem
-                    met={passwordCriteria.uppercase}
-                    text="One uppercase letter"
-                  />
-                  <CriteriaItem
-                    met={passwordCriteria.lowercase}
-                    text="One lowercase letter"
-                  />
-                  <CriteriaItem
-                    met={passwordCriteria.number}
-                    text="One number"
-                  />
-                  <CriteriaItem
-                    met={passwordCriteria.special}
-                    text="One special character (@$!%*?&)"
-                  />
+                <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Password Requirements:
+                  </p>
+                  <div className="space-y-2">
+                    <CriteriaItem
+                      met={passwordCriteria.length}
+                      text="At least 8 characters"
+                    />
+                    <CriteriaItem
+                      met={passwordCriteria.uppercase}
+                      text="One uppercase letter"
+                    />
+                    <CriteriaItem
+                      met={passwordCriteria.lowercase}
+                      text="One lowercase letter"
+                    />
+                    <CriteriaItem
+                      met={passwordCriteria.number}
+                      text="One number"
+                    />
+                    <CriteriaItem
+                      met={passwordCriteria.special}
+                      text="One special character (@$!%*?&)"
+                    />
+                  </div>
                 </div>
               )}
             </div>
 
-            <div>
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="confirmPassword"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Confirm Password
+              </Label>
               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="confirmPassword"
                   name="confirmPassword"
@@ -207,23 +280,25 @@ export default function SignUp() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1 pr-10"
+                  className="pl-10 pr-12 h-12 border-gray-300 dark:border-gray-600 focus:border-green-500 focus:ring-green-500 rounded-xl"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4" />
                   )}
                 </button>
               </div>
+
+              {/* Password Match Indicator */}
               {confirmPassword && (
-                <div className="mt-1">
+                <div className="mt-2">
                   <CriteriaItem
                     met={password === confirmPassword && password.length > 0}
                     text="Passwords match"
@@ -231,27 +306,34 @@ export default function SignUp() {
                 </div>
               )}
             </div>
-          </div>
 
-          <div>
+            {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full"
+              className="w-full h-12 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               disabled={
                 loading || !isPasswordValid || password !== confirmPassword
               }
             >
-              {loading ? "Creating account..." : "Sign up"}
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <span>Creating account...</span>
+                </div>
+              ) : (
+                "Create Account"
+              )}
             </Button>
-          </div>
-        </form>
+          </form>
+        </div>
 
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+        {/* Sign In Link */}
+        <div className="text-center mt-6">
+          <p className="text-gray-600 dark:text-gray-400">
             Already have an account?{" "}
             <Link
               href="/auth/signin"
-              className="text-green-600 hover:text-green-500 font-medium"
+              className="text-green-600 hover:text-green-500 dark:text-green-400 dark:hover:text-green-300 font-medium hover:underline transition-colors"
             >
               Sign in
             </Link>
