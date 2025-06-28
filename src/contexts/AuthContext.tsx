@@ -239,7 +239,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("AuthContext - Starting sign out...");
 
-      const res = await logoutWithTimeout();
+      const res = await logoutWithTimeout(3500);
 
       if (!res.success && res.reason === "timeout") {
         console.error("AuthContext - Sign out timed out");
