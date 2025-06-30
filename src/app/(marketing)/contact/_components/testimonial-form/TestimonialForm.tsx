@@ -16,7 +16,6 @@ import { MessageSquare, Star } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
-import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import TransitionLink from "@/components/TransitionLink";
