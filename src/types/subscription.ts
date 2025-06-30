@@ -26,7 +26,7 @@ export interface CreateSubscriptionRequest {
   meal_types: string[];
   delivery_days: string[];
   allergies?: string;
-  total_price: number;
+  promo_code?: string;
 }
 
 export interface PauseSubscriptionRequest {
