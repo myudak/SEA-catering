@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
+import TransitionLink from "@/components/TransitionLink";
 
 const TestimonialForm = () => {
   const { user, profile, loading: authLoading } = useAuth();
@@ -170,12 +171,12 @@ const TestimonialForm = () => {
               ) : (
                 <span className="text-blue-700 dark:text-blue-300 text-sm">
                   Public submission.{" "}
-                  <Link
+                  <TransitionLink
                     href="/auth/signin"
                     className="underline hover:text-blue-900"
                   >
                     Sign in for a better experience!
-                  </Link>
+                  </TransitionLink>
                 </span>
               )}
             </div>
