@@ -4,13 +4,13 @@ import { checkIsAdmin } from "@/lib/utils";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createServerComponentClient();
   const check = await checkIsAdmin(supabase);
   if (check instanceof NextResponse) return check;
 
-  const { id } = params;
+  const { id } = await params;
   const body = await request.json();
 
   const { data, error } = await supabase

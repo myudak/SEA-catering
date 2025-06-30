@@ -3,10 +3,10 @@ import { createServerComponentClient } from "@/lib/supabase-server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
   const supabase = await createServerComponentClient();
-  const { code } = params;
+  const { code } = await params;
 
   if (!code) {
     return NextResponse.json(
