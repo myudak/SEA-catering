@@ -153,7 +153,7 @@ export default function TestimonialClient() {
             }`}
           />
         ))}
-        <span className="ml-1 text-sm font-medium text-gray-700">
+        <span className="ml-1 text-sm font-medium text-muted-700">
           {rating}/5
         </span>
       </div>
