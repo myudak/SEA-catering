@@ -36,6 +36,10 @@ const SForm = ({
   handleMealTypeChange,
   handleDeliveryDayChange,
   isAuthenticated,
+  promoCode,
+  handlePromoCodeChange,
+  handleApplyPromo,
+  appliedPromo,
 }: SubscriptionFormProps) => {
   return (
     <div className="lg:col-span-2">
@@ -264,6 +268,34 @@ const SForm = ({
                 }
                 rows={3}
               />
+            </div>
+
+            {/* Promo Code */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold flex items-center text-gray-900 dark:text-white">
+                Promo Code
+              </h3>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="Enter promo code"
+                  value={promoCode}
+                  onChange={handlePromoCodeChange}
+                  className="flex-grow"
+                />
+                <Button type="button" onClick={handleApplyPromo}>
+                  Apply
+                </Button>
+              </div>
+              {appliedPromo && (
+                <p className="text-sm text-green-600">
+                  Applied &quot;{appliedPromo.code}&quot; for a{" "}
+                  {appliedPromo.type === "percentage"
+                    ? `${appliedPromo.discount}%`
+                    : `Rp ${appliedPromo.discount}`}{" "}
+                  discount!
+                </p>
+              )}
             </div>
 
             <Button

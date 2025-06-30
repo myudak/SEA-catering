@@ -36,18 +36,10 @@ type formData = {
   mealTypes: string[];
   deliveryDays: string[];
   allergies: string;
+  promoCode: string;
 };
 
-type setFormData = React.Dispatch<
-  React.SetStateAction<{
-    name: string;
-    phoneNumber: string;
-    planId: string;
-    mealTypes: string[];
-    deliveryDays: string[];
-    allergies: string;
-  }>
->;
+type setFormData = React.Dispatch<React.SetStateAction<formData>>;
 
 type handleSubmit = (e: React.FormEvent) => void;
 
@@ -70,11 +62,15 @@ export interface SubscriptionFormProps {
   handleMealTypeChange: handleMealTypeChange;
   handleDeliveryDayChange: handleDeliveryDayChange;
   isAuthenticated: boolean;
+  promoCode: string;
+  handlePromoCodeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleApplyPromo: () => void;
+  appliedPromo: { code: string; discount: number; type: string } | null;
 }
 
 export interface PriceCalculatorProps {
   selectedPlan: MealPlan | undefined;
-  formData: formData;
+  formData: Omit<formData, "promoCode">;
   totalPrice: number;
   formatPrice: formatPrice;
 }

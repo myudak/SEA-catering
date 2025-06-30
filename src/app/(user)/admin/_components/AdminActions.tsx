@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TransitionLink from "@/components/TransitionLink";
-import { Database, MessageSquare, Users } from "lucide-react";
+import { Database, MessageSquare, Ticket, Users } from "lucide-react";
 
 export default function AdminActions() {
   return (
@@ -43,6 +43,15 @@ export default function AdminActions() {
           >
             <MessageSquare className="mr-2 h-4 w-4" />
             Manage Testimonials
+          </TransitionLink>
+        </Button>
+        <Button variant="outline" className="w-full justify-start" asChild>
+          <TransitionLink
+            animationType="loadingTopBar"
+            href="/admin/promo-codes"
+          >
+            <Ticket className="mr-2 h-4 w-4" />
+            Manage Promo Codes
           </TransitionLink>
         </Button>
       </CardContent>
