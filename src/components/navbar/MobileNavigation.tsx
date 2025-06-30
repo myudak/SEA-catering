@@ -23,8 +23,8 @@ const MobileNavigation = ({
   isActive,
   user,
   profile,
-  handleSignOut,
   isSigningOut = false,
+  setSignOutDialog,
 }: NavbarProps) => {
   return (
     <div className="md:hidden">
@@ -90,21 +90,22 @@ const MobileNavigation = ({
 
           <SheetFooter className="border-t pt-4 mt-auto">
             {user ? (
-              <div className="space-y-3 w-full">
+              <div className="flex flex-col gap-3 w-full">
                 <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b">
                   Signed in as {profile?.full_name || "User"}
                 </div>
                 <SheetClose asChild>
-                  <TransitionLink href="/dashboard">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start"
-                      size="sm"
-                    >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    size="sm"
+                    asChild
+                  >
+                    <TransitionLink href="/dashboard">
                       <User className="h-4 w-4 mr-2" />
                       Dashboard
-                    </Button>
-                  </TransitionLink>
+                    </TransitionLink>
+                  </Button>
                 </SheetClose>
                 {profile?.role === "admin" && (
                   <SheetClose asChild>
@@ -125,7 +126,7 @@ const MobileNavigation = ({
                     variant="outline"
                     className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
                     size="sm"
-                    onClick={handleSignOut}
+                    onClick={() => setSignOutDialog(true)}
                     disabled={isSigningOut}
                   >
                     <LogOut className="h-4 w-4 mr-2" />
