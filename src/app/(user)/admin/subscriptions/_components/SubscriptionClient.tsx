@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { DateRangePicker } from "@/app/(user)/admin/_components/DateRangePicker";
+
 import type { DateRange } from "react-day-picker";
 import {
   User,
@@ -35,6 +35,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import TransitionLink from "@/components/TransitionLink";
+import { DateRangePicker } from "@/components/DataRangePicker";
 
 export default function SubscriptionClient() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -314,6 +315,9 @@ export default function SubscriptionClient() {
                       </div>
                     </TableHead>
                     <TableHead className="font-semibold dark:text-gray-200">
+                      Allergies & Dietary Restrictions
+                    </TableHead>
+                    <TableHead className="font-semibold dark:text-gray-200">
                       Actions
                     </TableHead>
                   </TableRow>
@@ -341,6 +345,9 @@ export default function SubscriptionClient() {
                       <TableCell>{getStatusBadge(sub.status)}</TableCell>
                       <TableCell className="text-gray-600 dark:text-gray-400">
                         {new Date(sub.next_billing_date).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">
+                        {sub.allergies || "N/A"}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2 flex-wrap">
