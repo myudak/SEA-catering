@@ -121,17 +121,25 @@ export default function SubscriptionFormClient({
   };
 
   const handleDeliveryDayChange = (day: string, checked: boolean) => {
-    if (checked) {
-      setFormData({
-        ...formData,
-        deliveryDays: [...formData.deliveryDays, day],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        deliveryDays: formData.deliveryDays.filter((d) => d !== day),
-      });
-    }
+    setFormData((prev) => {
+      const alreadyIncluded = prev.deliveryDays.includes(day);
+
+      if (checked && !alreadyIncluded) {
+        return {
+          ...prev,
+          deliveryDays: [...prev.deliveryDays, day],
+        };
+      }
+
+      if (!checked && alreadyIncluded) {
+        return {
+          ...prev,
+          deliveryDays: prev.deliveryDays.filter((d) => d !== day),
+        };
+      }
+
+      return prev; // nothing changed
+    });
   };
 
   const handleApplyPromo = async () => {
@@ -148,6 +156,19 @@ export default function SubscriptionFormClient({
           code: data.promoCode.code,
           discount: data.promoCode.value,
           type: data.promoCode.discount_type,
+        });
+
+        confetti({
+          particleCount: 100,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+        });
+        confetti({
+          particleCount: 100,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
         });
       } else {
         toast.error(data.error || "Invalid promo code");
