@@ -2,13 +2,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
-import MetricChart from "@/components/admin/MetricChart";
+import MetricChart from "@/app/(user)/admin/_components/MetricChart";
 import { DateRange } from "react-day-picker";
-import { DateRangePicker } from "./DataRangePicker";
+import { DateRangePicker } from "@/components/DataRangePicker";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface MetricsSectionProps {
   dateRange: DateRange | undefined;
   setDateRange: (dateRange: DateRange | undefined) => void;
+  loading: boolean;
   metrics: {
     dates: string[];
     newSubscriptions: number[];
@@ -28,6 +30,7 @@ export default function MetricsSection({
   dateRange,
   setDateRange,
   metrics,
+  loading,
 }: MetricsSectionProps) {
   return (
     <div className="mb-8">
@@ -54,44 +57,53 @@ export default function MetricsSection({
           </div>
         </CardContent>
       </Card>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 card-gradient-admin">
-        <MetricChart
-          label="New Subscriptions"
-          data={(metrics?.dates || []).map((d, i) => ({
-            x: d,
-            y: metrics!.newSubscriptions[i],
-          }))}
-          total={metrics?.totals.newSubscriptions || 0}
-        />
-        <MetricChart
-          label="MRR"
-          data={(metrics?.dates || []).map((d, i) => ({
-            x: d,
-            y: metrics!.mrr[i],
-          }))}
-          total={
-            metrics?.totals.mrr !== undefined
-              ? `Rp${metrics.totals.mrr.toLocaleString("id-ID")}`
-              : "Rp0"
-          }
-        />
-        <MetricChart
-          label="Reactivations"
-          data={(metrics?.dates || []).map((d, i) => ({
-            x: d,
-            y: metrics!.reactivations[i],
-          }))}
-          total={metrics?.totals.reactivations || 0}
-        />
-        <MetricChart
-          label="Subscription Growth"
-          data={(metrics?.dates || []).map((d, i) => ({
-            x: d,
-            y: metrics!.growth[i],
-          }))}
-          total={metrics?.totals.activeSubscriptions || 0}
-        />
-      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 card-gradient-admin">
+          <Skeleton className="h-60" />
+          <Skeleton className="h-60" />
+          <Skeleton className="h-60" />
+          <Skeleton className="h-60" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 card-gradient-admin">
+          <MetricChart
+            label="New Subscriptions"
+            data={(metrics?.dates || []).map((d, i) => ({
+              x: d,
+              y: metrics!.newSubscriptions[i],
+            }))}
+            total={metrics?.totals.newSubscriptions || 0}
+          />
+          <MetricChart
+            label="MRR"
+            data={(metrics?.dates || []).map((d, i) => ({
+              x: d,
+              y: metrics!.mrr[i],
+            }))}
+            total={
+              metrics?.totals.mrr !== undefined
+                ? `Rp${metrics.totals.mrr.toLocaleString("id-ID")}`
+                : "Rp0"
+            }
+          />
+          <MetricChart
+            label="Reactivations"
+            data={(metrics?.dates || []).map((d, i) => ({
+              x: d,
+              y: metrics!.reactivations[i],
+            }))}
+            total={metrics?.totals.reactivations || 0}
+          />
+          <MetricChart
+            label="Subscription Growth"
+            data={(metrics?.dates || []).map((d, i) => ({
+              x: d,
+              y: metrics!.growth[i],
+            }))}
+            total={metrics?.totals.activeSubscriptions || 0}
+          />
+        </div>
+      )}
     </div>
   );
 }

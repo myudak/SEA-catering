@@ -9,6 +9,7 @@ import MetricsSection from "./_components/MetricsSection";
 import AdminActions from "./_components/AdminActions";
 import AdminInformation from "./_components/AdminInformation";
 import SecurityNotice from "./_components/SecurityNotice";
+import { toast } from "sonner";
 
 function getPercentChange(metrics: {
   dates: string[];
@@ -34,6 +35,7 @@ function formatDate(date: Date | undefined | null) {
 
 export default function AdminPage() {
   const { loading } = useAuth();
+  const [loadingFetch, setLoadingFetch] = useState(true);
 
   // Default: last 7 days
   const today = new Date();
@@ -65,11 +67,21 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
+      setLoadingFetch(true);
       const start = formatDate(dateRange.from);
       const end = formatDate(dateRange.to);
       fetch(`/api/admin/metrics?start=${start}&end=${end}`)
         .then((res) => res.json())
-        .then((data) => setMetrics(data));
+        .then((data) => {
+          setLoadingFetch(false);
+          setMetrics(data);
+        })
+        .catch((error) => {
+          setLoadingFetch(false);
+          toast.error("Failed to fetch metrics");
+          console.error("Error fetching metrics:", error);
+          setMetrics(null);
+        });
     }
   }, [dateRange]);
 
@@ -93,6 +105,7 @@ export default function AdminPage() {
           dateRange={dateRange}
           setDateRange={setDateRange}
           metrics={metrics}
+          loading={loadingFetch}
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <AdminActions />
