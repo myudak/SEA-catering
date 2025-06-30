@@ -9,16 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
-import {
-  User,
-  ArrowRight,
-  Calendar,
-  Check,
-  Clock,
-  Gift,
-  Heart,
-  Star,
-} from "lucide-react";
+import { User, ArrowRight, Calendar, Check, Clock, Gift } from "lucide-react";
 import {
   Dialog,
   DialogContent,
