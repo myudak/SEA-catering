@@ -7,9 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Settings, CreditCard, LogOut, Plus } from "lucide-react";
 import { Subscription } from "@/types/subscription";
 import SubscriptionCard from "./_components/SubscriptionCard";
-import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
+import TransitionLink from "@/components/TransitionLink";
 
 export default function Dashboard() {
   const { user, profile, signOut, loading } = useAuth();
@@ -166,12 +166,12 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               Your Subscriptions
             </h2>
-            <Link href="/subscription">
+            <TransitionLink href="/subscription">
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 New Subscription
               </Button>
-            </Link>
+            </TransitionLink>
           </div>
 
           {subscriptionsLoading ? (
@@ -191,12 +191,12 @@ export default function Dashboard() {
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
                   Get started by creating your first meal subscription.
                 </p>
-                <Link href="/subscription">
+                <TransitionLink href="/subscription">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
                     Create Subscription
                   </Button>
-                </Link>
+                </TransitionLink>
               </CardContent>
             </Card>
           ) : (
@@ -265,18 +265,18 @@ export default function Dashboard() {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <Link href="/subscription">
+              <TransitionLink href="/subscription">
                 <Button className="w-full justify-start" variant="outline">
                   <Plus className="mr-2 h-4 w-4" />
                   Create New Subscription
                 </Button>
-              </Link>
-              <Link href="/dashboard/edit-profile">
+              </TransitionLink>
+              <TransitionLink href="/dashboard/edit-profile">
                 <Button className="w-full justify-start" variant="outline">
                   <User className="mr-2 h-4 w-4" />
                   Edit Profile
                 </Button>
-              </Link>
+              </TransitionLink>
             </CardContent>
           </Card>
 
