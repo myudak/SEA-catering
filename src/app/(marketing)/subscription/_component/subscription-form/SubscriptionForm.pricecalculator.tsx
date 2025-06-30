@@ -57,14 +57,6 @@ const PriceCalculator = ({
                     {formData.deliveryDays.length || 0}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Weeks per month:
-                  </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    4.3
-                  </span>
-                </div>
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
@@ -78,7 +70,7 @@ const PriceCalculator = ({
                 </div>
               </div>
 
-              {totalPrice > 0 && (
+              {/* {totalPrice > 0 && (
                 <div className="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg border dark:border-green-800">
                   <p className="text-xs text-green-700 dark:text-green-300">
                     <strong>Calculation:</strong>{" "}
@@ -87,7 +79,7 @@ const PriceCalculator = ({
                     {formData.deliveryDays.length} days × 4.3 weeks
                   </p>
                 </div>
-              )}
+              )} */}
             </>
           )}
 
