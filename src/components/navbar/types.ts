@@ -18,12 +18,11 @@ export type NavbarProps = {
   isSigningOut?: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
+  setSignOutDialog: (open: boolean) => void;
 };
 
 export type UserMenuProps = {
   profile: UserProfile | null;
   setSignOutDialog: (open: boolean) => void;
-  signOutDialog: boolean;
   isSigningOut?: boolean;
-  handleSignOut?: () => void;
 };

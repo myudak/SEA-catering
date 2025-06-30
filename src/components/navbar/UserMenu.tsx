@@ -1,4 +1,11 @@
-import { Settings, User, LogOut } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+import {
+  Settings,
+  User,
+  LogOut,
+  LayoutDashboard,
+  Settings2,
+} from "lucide-react";
 import React from "react";
 import TransitionLink from "../TransitionLink";
 import { Button } from "../ui/button";
@@ -8,15 +15,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { UserMenuProps } from "./types";
 
 const UserMenu = ({
   profile,
   setSignOutDialog,
-  signOutDialog,
   isSigningOut,
-  handleSignOut,
 }: UserMenuProps) => {
   return (
     <>
@@ -56,7 +60,7 @@ const UserMenu = ({
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
             <TransitionLink href="/dashboard" className="flex items-center">
-              <User className="h-4 w-4 mr-2" />
+              <LayoutDashboard className="h-4 w-4 mr-2" />
               Dashboard
             </TransitionLink>
           </DropdownMenuItem>
@@ -68,6 +72,15 @@ const UserMenu = ({
               </TransitionLink>
             </DropdownMenuItem>
           )}
+          <DropdownMenuItem asChild>
+            <TransitionLink
+              href="/dashboard/edit-profile"
+              className="flex items-center"
+            >
+              <Settings2 className="mr-2 h-4 w-4" />
+              Edit Profile
+            </TransitionLink>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setSignOutDialog(true)}
             className="flex items-center"
@@ -78,36 +91,6 @@ const UserMenu = ({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <Dialog open={signOutDialog} onOpenChange={setSignOutDialog}>
-        <DialogContent>
-          <DialogTitle>
-            <div className="flex items-center space-x-2">
-              <LogOut className="h-6 w-6 text-red-600" />
-              <span>Sign Out</span>
-            </div>
-          </DialogTitle>
-          <div className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Confirm Sign Out</h3>
-            <p className="mb-4">
-              Are you sure you want to sign out? You will need to sign in again
-              to access your account.
-            </p>
-            <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setSignOutDialog(false)}>
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={handleSignOut}
-                disabled={isSigningOut}
-              >
-                {isSigningOut ? "Signing out..." : "Sign Out"}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

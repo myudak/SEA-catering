@@ -4,7 +4,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Home, UtensilsCrossed, CreditCard, Phone } from "lucide-react";
+import { Home, UtensilsCrossed, CreditCard, Phone, LogOut } from "lucide-react";
 import ThemeToggleButton from "../ui/theme-toggle-button";
 import Image from "next/image";
 import TransitionLink from "../TransitionLink";
@@ -12,6 +12,7 @@ import { navItemType } from "./types";
 import MobileNavigation from "./MobileNavigation";
 import { toast } from "sonner";
 import UserMenu from "./UserMenu";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 
 const Navbar = () => {
   const [signOutDialog, setSignOutDialog] = React.useState(false);
@@ -97,10 +98,8 @@ const Navbar = () => {
             {user ? (
               <UserMenu
                 profile={profile}
-                handleSignOut={handleSignOut}
                 isSigningOut={isSigningOut}
                 setSignOutDialog={setSignOutDialog}
-                signOutDialog={signOutDialog}
               />
             ) : (
               <div className="flex items-center space-x-2">
@@ -125,7 +124,41 @@ const Navbar = () => {
             isSigningOut={isSigningOut}
             open={mobileNavSheet}
             setOpen={setMobileNavSheet}
+            setSignOutDialog={setSignOutDialog}
           />
+
+          <Dialog open={signOutDialog} onOpenChange={setSignOutDialog}>
+            <DialogContent>
+              <DialogTitle>
+                <div className="flex items-center space-x-2">
+                  <LogOut className="h-6 w-6 text-red-600" />
+                  <span>Sign Out</span>
+                </div>
+              </DialogTitle>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold mb-4">Confirm Sign Out</h3>
+                <p className="mb-4">
+                  Are you sure you want to sign out? You will need to sign in
+                  again to access your account.
+                </p>
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setSignOutDialog(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={handleSignOut}
+                    disabled={isSigningOut}
+                  >
+                    {isSigningOut ? "Signing out..." : "Sign Out"}
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </nav>
