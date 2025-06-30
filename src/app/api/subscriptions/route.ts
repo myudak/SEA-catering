@@ -70,8 +70,7 @@ export async function POST(request: NextRequest) {
       !body.customer_name ||
       !body.phone_number ||
       !body.meal_types ||
-      !body.delivery_days ||
-      !body.total_price
+      !body.delivery_days
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -111,6 +110,62 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Server-side price calculation
+    const mealTypesCount = body.meal_types.length;
+    const deliveryDaysCount = body.delivery_days.length;
+    const weeksInMonth = 4.3; // Approximation
+    let totalPrice =
+      mealPlan.price * mealTypesCount * deliveryDaysCount * weeksInMonth;
+    let promoCodeId: string | null = null;
+
+    // Validate and apply promo code
+    if (body.promo_code) {
+      const { data: promoCode, error: promoCodeError } = await supabase
+        .from("promo_codes")
+        .select("*")
+        .eq("code", body.promo_code)
+        .single();
+
+      if (promoCodeError || !promoCode) {
+        return NextResponse.json(
+          { error: "Invalid promo code" },
+          { status: 400 }
+        );
+      }
+      if (promoCode.usage_count >= promoCode.usage_limit) {
+        return NextResponse.json(
+          { error: "Promo code usage limit reached" },
+          { status: 400 }
+        );
+      }
+      if (
+        !promoCode.is_active ||
+        (promoCode.valid_to && new Date(promoCode.valid_to) < new Date())
+      ) {
+        return NextResponse.json(
+          { error: "Promo code is not active or has expired" },
+          { status: 400 }
+        );
+      }
+
+      if (promoCode.discount_type === "percentage") {
+        totalPrice *= 1 - promoCode.value / 100;
+      } else if (promoCode.discount_type === "fixed_amount") {
+        totalPrice -= promoCode.value;
+      }
+      promoCodeId = promoCode.id;
+
+      // +1 usage count for the promo code
+      if (promoCodeId) {
+        await supabase
+          .from("promo_codes")
+          .update({
+            usage_count: promoCode.usage_count + 1,
+          })
+          .eq("id", promoCodeId);
+      }
+    }
+
     // Calculate next billing date (30 days from now)
     const nextBillingDate = new Date();
     nextBillingDate.setDate(nextBillingDate.getDate() + 30);
@@ -126,7 +181,8 @@ export async function POST(request: NextRequest) {
         meal_types: body.meal_types,
         delivery_days: body.delivery_days,
         allergies: body.allergies?.trim() || null,
-        total_price: body.total_price,
+        total_price: totalPrice,
+        promo_code_id: promoCodeId,
         status: "active",
         next_billing_date: nextBillingDate.toISOString().split("T")[0],
       })
