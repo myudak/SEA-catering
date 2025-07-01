@@ -175,17 +175,22 @@ Before you begin, ensure you have the following installed:
 
 5. **Initialize the database schema**
 
-   **Option A: Using Supabase CLI (Recommended)**
+   **Option A: Using Supabase CLI**
 
    ```bash
    # Install Supabase CLI if you haven't already
    npm install -g supabase
 
+
+   # Link your project
+   supabase link --project-ref <your project ref>
+
+
    # Run the schema
    supabase db execute --file ./supabase/schema.sql
    ```
 
-   **Option B: Using Supabase Web UI**
+   **Option B: Using Supabase Web UI (Recommended)**
 
    1. Go to [Supabase Dashboard](https://app.supabase.com/)
    2. Select your project
