@@ -62,6 +62,13 @@ If you prefer to set up the database manually:
   
   *Click the image above to visit the live application*
 
+| Role         | Email             | Password     |
+| ------------ | ----------------- | ------------ |
+| **👨‍💼 Admin** | `admin@admin.com` | `Admin1234@` |
+| **👤 User**  | `user@demo.com`   | `User1234@`  |
+
+> 🚀 **Quick Start**: Use the admin credentials to explore the full dashboard functionality!
+
 </div>
 
 <details>
@@ -198,6 +205,9 @@ Before you begin, ensure you have the following installed:
    4. Click **"New Query"**
    5. Copy and paste the contents from `./supabase/schema.sql`
    6. Click **"Run"** to execute the schema
+
+   > 💡 **Tip:** Also remember to disable email confirmation in Supabase:  
+   > Go to **Supabase → Auth → Sign-in Providers → Email → Disable "Confirm Email"**
 
 6. **Run the development server**
 
