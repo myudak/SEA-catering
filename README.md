@@ -187,7 +187,7 @@ Before you begin, ensure you have the following installed:
 
 
    # Run the schema
-   supabase db execute --file ./supabase/schema.sql
+   supabase db push
    ```
 
    **Option B: Using Supabase Web UI (Recommended)**
